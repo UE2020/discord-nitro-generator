@@ -11,7 +11,7 @@ def check_code(code, proxies):
 		result = json.loads(r.text)
 		if "message" in result:
 			if result["message"] == "You are being rate limited.":
-				print("======> [INFO] You are bring rate limited.")
+				print("======> [INFO] You are being rate limited for:" + str(result["retry_after"]))
 				time.sleep(result["retry_after"] / 1000)
 			elif result["message"] == "Unknown Gift Code":
 				print("======> [INFO] Unknown gift code: " + str(code))
