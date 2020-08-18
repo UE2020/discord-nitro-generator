@@ -12,7 +12,7 @@ def check_code(code, proxies):
 		if "message" in result:
 			if result["message"] == "You are being rate limited.":
 				print("======> [INFO] You are bring rate limited.")
-				time.sleep(result["retry_after"])
+				time.sleep(result["retry_after"] / 1000)
 			elif result["message"] == "Unknown Gift Code":
 				print("======> [INFO] Unknown gift code: " + str(code))
 				return
@@ -27,4 +27,4 @@ def check_code(code, proxies):
 while True:
 	code = ("".join(random.choice(string.ascii_letters + string.digits) for _ in range(16)))
 	check_code(code, proxies)
-	time.sleep(3)
+	time.sleep(10)
