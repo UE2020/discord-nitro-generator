@@ -27,7 +27,7 @@ def check_code(code, proxies):
 				print(bcolors.FAIL + "======> [INFO] Unknown gift code: " + str(code) + bcolors.ENDC)
 				return
 			else:
-				print(bcolors.OKBLUE + "======> [INFO] Found gift: " + str(code) + bcolors.ENDC)
+				print(bcolors.OKGREEN + "======> [INFO] Found gift: " + str(code) + bcolors.ENDC)
 				return
 		else:
 			print(bcolors.FAIL + "======> [ERR] Failed to find 'message' for code: " + str(code) + bcolors.ENDC)
