@@ -29,7 +29,7 @@ function checkCode () {
       console.warn ("======> [ERR] ".warn + id.warn + " not valid.".warn)
       timers.setTimeout(checkCode, 10000)
     } else if (body.message.includes ('rate')) {
-      console.warn("======> [WARN] You are being rate limited. Sleeping for ".error + body.retry_after.error + " ms".error);
+      console.warn("======> [WARN] You are being rate limited. Sleeping for ".error + body.retry_after.toString().error + " ms".error);
       timers.setTimeout(checkCode, body.retry_after)
     }
 
