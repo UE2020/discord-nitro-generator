@@ -17,7 +17,7 @@ proxies = {
 def check_code(code, proxies):
 	while True:
 		r = requests.get('https://discord.com/api/v6/entitlements/gift-codes/' + code, proxies=proxies)
-		print(r.text)
+		#print(r.text)
 		result = json.loads(r.text)
 		if "message" in result:
 			if result["message"] == "You are being rate limited.":
