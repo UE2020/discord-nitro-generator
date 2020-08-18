@@ -1,5 +1,14 @@
 const request = require('request');
 const timers = require('timers');
+const colors = require('colors');
+
+colors.setTheme({
+  info: 'bgGreen',
+  help: 'cyan',
+  warn: 'yellow',
+  success: 'bgBlue',
+  error: 'red'
+});
 
 function makeid(length) {
    var result           = '';
@@ -17,16 +26,16 @@ function checkCode () {
   request(uri, { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
     if (body.message.includes ("Unknown")) {
-      console.warn ("======> [ERR] " + id + " not valid.")
+      console.warn ("======> [ERR] ".warn + id.warn + " not valid.".warn)
       timers.setTimeout(checkCode, 10000)
     } else if (body.message.includes ('rate')) {
-      console.warn("======> [WARN] You are being rate limited. Sleeping for " + body.retry_after + " ms");
+      console.warn("======> [WARN] You are being rate limited. Sleeping for ".error + body.retry_after.error + " ms".error);
       timers.setTimeout(checkCode, body.retry_after)
     }
 
     else {
-      console.log("======> [RES] Possible resolution?")
-      console.log ("======> [STACK TRACE] CODE: " + id)
+      console.log("======> [RES] Possible resolution?".success)
+      console.log ("======> [STACK TRACE] CODE: " + id.success)
       console.log (body);
       process.exit(22);
     }
