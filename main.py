@@ -1,4 +1,4 @@
-import requests, string, json, time, random
+import requests, string, json, time, random, threading
 
 class bcolors:
 	HEADER = '\033[95m'
@@ -10,9 +10,14 @@ class bcolors:
 	BOLD = '\033[1m'
 	UNDERLINE = '\033[4m'
 
-proxies = {
 
-}
+def gen_code(length):
+	return ("".join(random.choice(string.ascii_letters + string.digits) for _ in range(16)))
+
+
+def gen_proxy(proxy):
+	return {"http": proxy, "https": proxy}
+
 
 def check_code(code, proxies):
 	while True:
@@ -27,14 +32,28 @@ def check_code(code, proxies):
 				print(bcolors.FAIL + "======> [INFO] Unknown gift code: " + str(code) + bcolors.ENDC)
 				return
 			else:
-				print(bcolors.OKGREEN + "======> [INFO] Found gift: " + str(code) + bcolors.ENDC)
-				return
+				print(bcolors.OKBLUE + "======> [INFO] Found gift: " + str(code) + bcolors.ENDC)
+				quit()
 		else:
-			print(bcolors.FAIL + "======> [ERR] Failed to find 'message' for code: " + str(code) + bcolors.ENDC)
-			return
+			print(bcolors.OKBLUE + "======> [ERR] Failed to find 'message' for code: " + str(code) + bcolors.ENDC)
+			quit()
 
 
-while True:
-	code = ("".join(random.choice(string.ascii_letters + string.digits) for _ in range(16)))
-	check_code(code, proxies)
-	time.sleep(10)
+def mainloop(proxy):
+	while True:
+		code = gen_code(16)
+		check_code(code, proxy)
+		time.sleep(10)
+
+
+threads = []
+proxies = [{},
+	gen_proxy('37.120.168.223:8888'),
+	gen_proxy('130.61.95.193:3128'),
+	gen_proxy('147.75.51.179:3128'),
+	gen_proxy('92.244.99.229:3128')
+]
+for proxy in proxies:
+	threads.append(threading.Thread(target=mainloop, args=[proxy]))
+for thread in threads:
+	thread.start()
